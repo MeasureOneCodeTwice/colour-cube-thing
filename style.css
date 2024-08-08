@@ -15,7 +15,6 @@ body
 #block-container
 {
     width: 80vh;
-    background-color: brown;
     display: flex;
     flex-wrap: wrap;
 }
