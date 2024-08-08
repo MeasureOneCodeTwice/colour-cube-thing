@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        <link rel="stylesheet" href="style.css">
+        <meta charset="UTF-8">
+        <title>
+            GridMouse
+        </title>
+    </head>
+</html>
+
+<body>
+    <div id="block-container">
+    </div>
+</body>
+
+<script>
+    let boxContainer  = document.querySelector("#block-container")
+    boxContainer.addEventListener("mouseover", (ev) => {
+        ev.target.style.backgroundColor =
+            brightenColor(ev.target.style.backgroundColor) } );
+
+    boxContainer.addEventListener("click", (ev) => {
+        ev.target.style.backgroundColor = "#ffffff" } )
+
+    const createGrid = function(parentElement, gridSize)
+    {
+        //units are vh
+        let height = "80vw"
+        let width  = "80vw"
+
+        //the slice is to get rid of the px at the end of the 
+        //width and height.
+        let boxHeight = "" + height.slice(0, -2) / gridSize + "vh"
+        let boxWidth  = "" + width.slice(0, -2)  / gridSize + "vh"
+
+        boxList = new Array();
+
+        let boxDimentions = "height: " + boxHeight +
+            "; width: "+ boxWidth + ";"
+        for( let i = 0; i < gridSize; i++)
+        {
+            let row = new Array()
+            for( let j = 0; j < gridSize; j++ )
+            {
+                let boxColor = "background-color: " + randomDarkColor() 
+                row.push( document.createElement("div") );
+                row[j].setAttribute("style", boxDimentions + boxColor  )
+                parentElement.appendChild(row[j]);
+            }
+        }
+    };
+
+    function randomHexDigit()
+    {
+        digits = ['1','2','3','4','5','6','7','8','9',
+            'a','b','c','d','e','f']
+        return digits[Math.floor(Math.random() * 15)]
+    }
+
+    function randomDarkColor()
+    {
+        output = "#"
+        let DIGITS_IN_COLOR = 6
+        for( let i = 0; i < DIGITS_IN_COLOR; i++)
+            if(i % 2 == 0) {
+                output += Math.floor(Math.random() * 5)
+            } else {
+                output += randomHexDigit();
+            }
+        return output;
+    }
+
+    function brightenColor(rgbString)
+    {
+        substring = rgbString.split(",")
+        substring[0] = substring[0].slice(4, substring[0].length)
+        substring[1] = substring[1].trim()
+        substring[2] = substring[2].trim().slice(0, substring[2].length - 2)
+        let max = +substring[0]
+        if(+substring[1] > max)
+            max = substring[1]
+        if(+substring[2] > max)
+            max = substring[2]
+
+
+        let NUM_COLORS = 3
+        for( let i = 0; i < NUM_COLORS; i++)
+        {
+            if( substring[i] == max )
+            {
+                substring[i] = Math.min(+substring[i] + 100, 255)
+            } else {
+                substring[i] = Math.max(+substring[i] - 100, 0  )
+            }
+        }
+
+        let result = "rgb(" + substring[0] + " " + substring[1] + " " +
+            substring[2] + ")"
+        return result;
+    }
+    
+
+
+    createGrid(boxContainer , 50)
+
+</script>
