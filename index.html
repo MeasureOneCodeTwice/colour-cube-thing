@@ -17,12 +17,10 @@
 
 <script>
     let boxContainer  = document.querySelector("#block-container")
+
     boxContainer.addEventListener("mouseover", (ev) => {
         ev.target.style.backgroundColor =
             brightenColor(ev.target.style.backgroundColor) } );
-
-    boxContainer.addEventListener("click", (ev) => {
-        ev.target.style.backgroundColor = "#ffffff" } )
 
     const createGrid = function(parentElement, gridSize)
     {
@@ -35,20 +33,15 @@
         let boxHeight = "" + height.slice(0, -2) / gridSize + "vh"
         let boxWidth  = "" + width.slice(0, -2)  / gridSize + "vh"
 
-        boxList = new Array();
-
-        let boxDimentions = "height: " + boxHeight +
+        let boxStyle = "height: " + boxHeight +
             "; width: "+ boxWidth + ";"
-        for( let i = 0; i < gridSize; i++)
+
+        for( let j = 0; j < gridSize ** 2; j++ )
         {
-            let row = new Array()
-            for( let j = 0; j < gridSize; j++ )
-            {
-                let boxColor = "background-color: " + randomDarkColor() 
-                row.push( document.createElement("div") );
-                row[j].setAttribute("style", boxDimentions + boxColor  )
-                parentElement.appendChild(row[j]);
-            }
+            let boxColor = "background-color: " + randomDarkColor() 
+            let currentBox = document.createElement("div");
+            currentBox.setAttribute("style", boxDimentions + boxColor  )
+            parentElement.appendChild(currentBox);
         }
     };
 
@@ -83,7 +76,6 @@
             max = substring[1]
         if(+substring[2] > max)
             max = substring[2]
-
 
         let NUM_COLORS = 3
         for( let i = 0; i < NUM_COLORS; i++)
